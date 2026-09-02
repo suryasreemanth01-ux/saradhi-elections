@@ -18,13 +18,14 @@ export function VotingScreen({ electionId, onComplete }: VotingScreenProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+
   useEffect(() => {
     fetchPositions();
   }, [electionId]);
 
   const fetchPositions = async () => {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
       const response = await fetch(`${API_URL}/election/positions/${electionId}`);
       const data = await response.json();
       setPositions(data);

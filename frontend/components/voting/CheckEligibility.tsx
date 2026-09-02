@@ -1,99 +1,114 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-interface CheckEligibilityProps {
-  onSuccess: (data: any) => void;
+interface ReviewScreenProps {
+  selections: Record<number, number>;
+  electionId: number;
+  mobileNumber: string;
+  onBack: () => void;
+  onSubmit: () => void;
 }
 
-export function CheckEligibility({ onSuccess }: CheckEligibilityProps) {
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onSubmit }: ReviewScreenProps) {
+  const [positions, setPositions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleCheck = async () => {
-    if (!mobileNumber || mobileNumber.length < 10) {
-      setError('Please enter a valid 10-digit mobile number');
-      return;
-    }
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
-    setLoading(true);
-    setError('');
+  useEffect(() => {
+    fetchPositions();
+  }, [electionId]);
 
+  const fetchPositions = async () => {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-      const response = await fetch(`${API_URL}/voter/check-eligibility`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile_number: mobileNumber })
-      });
-
+      const response = await fetch(`${API_URL}/election/positions/${electionId}`);
       const data = await response.json();
-
-      if (data.eligible) {
-        onSuccess({
-          mobile_number: mobileNumber,
-          voter_name: data.voter_name,
-          election_id: data.election_id
-        });
-      } else {
-        setError(data.message);
-      }
+      setPositions(data);
+      setLoading(false);
     } catch (err) {
-      setError('An error occurred. Please try again.');
-    } finally {
       setLoading(false);
     }
   };
 
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      const votes = Object.entries(selections).map(([positionId, candidateId]) => ({
+        position_id: parseInt(positionId),
+        candidate_id: candidateId
+      }));
+
+      const response = await fetch(`${API_URL}/voter/submit-vote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mobile_number: mobileNumber,
+          election_id: electionId,
+          votes: votes
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        onSubmit();
+      } else {
+        alert(data.message || 'Failed to submit vote');
+        setSubmitting(false);
+      }
+    } catch (err) {
+      alert('An error occurred. Please try again.');
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Card className="w-full max-w-md mx-auto">
+        <CardContent className="py-8 text-center">
+          <div className="text-gray-600">Loading review...</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl text-center">Welcome!</CardTitle>
-        <CardDescription className="text-center">
-          Enter your registered mobile number to check eligibility
-        </CardDescription>
+        <CardTitle className="text-2xl text-center">REVIEW YOUR VOTE</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div>
-            <label className="text-sm font-medium block mb-2">
-              Mobile Number
-            </label>
-            <div className="flex gap-2">
-              <span className="flex items-center px-3 bg-gray-100 border border-r-0 rounded-l-md text-gray-600">
-                +91
-              </span>
-              <Input
-                type="tel"
-                maxLength={10}
-                value={mobileNumber}
-                onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
-                className="rounded-l-none"
-                placeholder="9876543210"
-              />
-            </div>
-          </div>
+          {positions.map((position) => {
+            const selectedCandidateId = selections[position.id];
+            const selectedCandidate = position.candidates.find((c: any) => c.id === selectedCandidateId);
+            return (
+              <div key={position.id} className="border-b pb-3">
+                <div className="text-sm font-medium text-gray-500">{position.name}</div>
+                <div className="text-lg font-semibold text-gray-900">{selectedCandidate?.name || 'Not selected'}</div>
+              </div>
+            );
+          })}
+        </div>
 
-          {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-700 text-sm">
-              {error}
-            </div>
-          )}
+        <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+          <p className="text-sm text-yellow-800">
+            ⚠️ Please carefully review your selections. Once your vote is submitted, it cannot be changed.
+          </p>
+        </div>
 
-          <Button
-            onClick={handleCheck}
-            disabled={loading}
-            className="w-full text-lg py-6"
-          >
-            {loading ? 'Checking...' : 'CHECK ELIGIBILITY'}
+        <div className="flex gap-3 mt-6">
+          <Button onClick={onBack} variant="outline" className="flex-1" disabled={submitting}>
+            BACK
+          </Button>
+          <Button onClick={handleSubmit} className="flex-1" disabled={submitting}>
+            {submitting ? 'SUBMITTING...' : 'SUBMIT FINAL VOTE'}
           </Button>
         </div>
       </CardContent>
     </Card>
   );
 }
-

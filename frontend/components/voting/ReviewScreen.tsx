@@ -17,15 +17,16 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+
   useEffect(() => {
     fetchPositions();
   }, [electionId]);
 
   const fetchPositions = async () => {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-    const response = await fetch(`${API_URL}/election/positions/${electionId}`);
-    const response = await fetch(`${API_URL}/voter/submit-vote`, {
+      const response = await fetch(`${API_URL}/election/positions/${electionId}`);
+      const data = await response.json();
       setPositions(data);
       setLoading(false);
     } catch (err) {
@@ -41,7 +42,7 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
         candidate_id: candidateId
       }));
 
-      const response = await fetch('http://localhost:8000/api/voter/submit-vote', {
+      const response = await fetch(`${API_URL}/voter/submit-vote`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
