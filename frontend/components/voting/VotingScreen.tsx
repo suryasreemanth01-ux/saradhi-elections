@@ -18,7 +18,7 @@ export function VotingScreen({ electionId, onComplete }: VotingScreenProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://saradhi-elections-backend.onrender.com/api';
 
   useEffect(() => {
     fetchPositions();

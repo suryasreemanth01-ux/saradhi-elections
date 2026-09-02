@@ -14,7 +14,7 @@ export function CheckEligibility({ onSuccess }: CheckEligibilityProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://saradhi-elections-backend.onrender.com/api';
 
   const handleCheck = async () => {
     if (!mobileNumber || mobileNumber.length < 10) {
