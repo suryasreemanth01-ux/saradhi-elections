@@ -8,3 +8,14 @@ alembic
 python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
+fastapi
+uvicorn[standard]
+sqlalchemy
+python-dotenv
+pydantic
+pydantic-settings
+alembic
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+pandas
