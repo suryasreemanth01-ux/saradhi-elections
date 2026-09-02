@@ -3,7 +3,6 @@ services:
     name: saradhi-elections-backend
     runtime: python
     rootDir: backend
-    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
@@ -24,7 +23,6 @@ services:
     name: saradhi-elections-frontend
     runtime: node
     rootDir: frontend
-    plan: free
     buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
