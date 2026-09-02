@@ -27,10 +27,6 @@ services:
     startCommand: npm start
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        fromService:
-          name: saradhi-elections-backend
-          type: web
-          property: url
-          suffix: /api
+        value: https://saradhi-elections-backend.onrender.com/api
 
-          
+        
