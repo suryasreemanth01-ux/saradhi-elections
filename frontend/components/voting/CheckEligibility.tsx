@@ -24,7 +24,8 @@ export function CheckEligibility({ onSuccess }: CheckEligibilityProps) {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/voter/check-eligibility', {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${API_URL}/voter/check-eligibility`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mobile_number: mobileNumber })
@@ -95,3 +96,4 @@ export function CheckEligibility({ onSuccess }: CheckEligibilityProps) {
     </Card>
   );
 }
+

@@ -23,8 +23,9 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
 
   const fetchPositions = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/election/positions/${electionId}`);
-      const data = await response.json();
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+    const response = await fetch(`${API_URL}/election/positions/${electionId}`);
+    const response = await fetch(`${API_URL}/voter/submit-vote`, {
       setPositions(data);
       setLoading(false);
     } catch (err) {

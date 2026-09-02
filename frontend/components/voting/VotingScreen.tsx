@@ -24,7 +24,8 @@ export function VotingScreen({ electionId, onComplete }: VotingScreenProps) {
 
   const fetchPositions = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/election/positions/${electionId}`);
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${API_URL}/election/positions/${electionId}`);
       const data = await response.json();
       setPositions(data);
       setLoading(false);
