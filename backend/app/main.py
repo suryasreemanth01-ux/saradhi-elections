@@ -20,7 +20,7 @@ app = FastAPI(
 # CORS settings
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for testing
+    allow_origins=settings.BACKEND_CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -31,32 +31,8 @@ app.include_router(voter_router)
 app.include_router(admin_router)
 app.include_router(election_router)
 
-@app.get("/")
-def root():
-    return {"message": "Saradhi Elections API is running"}
 
-@app.get("/health")
-def health_check():
-    return {"status": "healthy"}
 @app.get("/create-admin")
-def create_admin():
-    from app.core.database import SessionLocal
-    from app.models.admin import Admin
-    from app.core.security import get_password_hash
-    
-    db = SessionLocal()
-    admin = db.query(Admin).filter(Admin.email == "admin@example.com").first()
-    if admin:
-        return {"message": "Admin already exists"}
-    
-    admin = Admin(
-        email="admin@example.com",
-        password_hash=get_password_hash("admin123")
-    )
-    db.add(admin)
-    db.commit()
-    return {"message": "Admin created successfully"}
-    @app.get("/create-admin")
 def create_admin():
     from app.core.database import SessionLocal
     from app.models.admin import Admin
@@ -77,4 +53,13 @@ def create_admin():
         return {"message": "Admin created successfully"}
     finally:
         db.close()
-        
+
+
+@app.get("/")
+def root():
+    return {"message": "Saradhi Elections API is running"}
+
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
