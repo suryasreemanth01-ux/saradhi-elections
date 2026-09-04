@@ -56,3 +56,25 @@ def create_admin():
     db.add(admin)
     db.commit()
     return {"message": "Admin created successfully"}
+    @app.get("/create-admin")
+def create_admin():
+    from app.core.database import SessionLocal
+    from app.models.admin import Admin
+    from app.core.security import get_password_hash
+    
+    db = SessionLocal()
+    try:
+        admin = db.query(Admin).filter(Admin.email == "admin@example.com").first()
+        if admin:
+            return {"message": "Admin already exists"}
+        
+        admin = Admin(
+            email="admin@example.com",
+            password_hash=get_password_hash("admin123")
+        )
+        db.add(admin)
+        db.commit()
+        return {"message": "Admin created successfully"}
+    finally:
+        db.close()
+        
