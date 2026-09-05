@@ -1,4 +1,4 @@
-\"use client";
+"use client";
 
 import { useState, useEffect } from 'react';
 
@@ -93,13 +93,13 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
 
       <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
         <p className="text-sm text-yellow-800">
-          ⚠️ Please carefully review your selections. Once submitted, it cannot be changed.
+          Please carefully review your selections. Once submitted, it cannot be changed.
         </p>
       </div>
 
       <div className="flex gap-3 mt-6">
         <button onClick={onBack} disabled={submitting} className="btn-secondary">
-          ← BACK
+          BACK
         </button>
         <button onClick={handleSubmit} disabled={submitting} className="btn-primary">
           {submitting ? 'SUBMITTING...' : 'SUBMIT VOTE'}

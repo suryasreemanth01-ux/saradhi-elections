@@ -98,7 +98,7 @@ export function VotingScreen({ electionId, onComplete }: VotingScreenProps) {
         disabled={!selections[currentPosition.id]}
         className="btn-primary mt-6"
       >
-        {currentIndex < totalPositions - 1 ? 'NEXT →' : 'REVIEW VOTE'}
+        {currentIndex < totalPositions - 1 ? 'NEXT' : 'REVIEW VOTE'}
       </button>
     </div>
   );
