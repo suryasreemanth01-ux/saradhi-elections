@@ -73,8 +73,9 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
     <div>
       {/* Title */}
       <div className="text-center mb-2">
-        <h2 className="text-2xl font-bold text-[#1E3A8A]">Review Your Vote</h2>
-        <p className="text-sm text-[#6B7280] mt-1">Please review your selections before submitting</p>
+        
+        <h2 className="text-3xl font-bold text-[#1E3A8A]">Review Your Vote</h2>
+        <p className="text-sm text-[#4B5563] mt-1">Please review your selections before submitting</p>
       </div>
 
       {/* Selections */}
