@@ -71,26 +71,36 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
 
   return (
     <div>
-      {/* Title */}
+      {/* Page Heading */}
       <div className="text-center mb-2">
-        
-        <h2 className="text-3xl font-bold text-[#1E3A8A]">Review Your Vote</h2>
-        <p className="text-sm text-[#4B5563] mt-1">Please review your selections before submitting</p>
+        <h1 className="text-3xl font-bold text-[#1E3A8A] uppercase tracking-wide">
+          Review Your Vote
+        </h1>
+        <p className="text-base text-[#6B7280] mt-1">
+          Please review your selections before submitting.
+        </p>
       </div>
 
-      {/* Selections */}
-      <div className="space-y-3 mt-6">
+      {/* Candidate Cards */}
+      <div className="space-y-4 mt-6">
         {positions.map((position, index) => {
           const selectedCandidateId = selections[position.id];
           const selectedCandidate = position.candidates.find((c: any) => c.id === selectedCandidateId);
           return (
-            <div key={position.id} className="p-4 border border-gray-200 rounded-xl bg-gray-50">
-              {/* Position Name - Dark Blue */}
-              <div className="text-sm font-semibold text-[#1E3A8A] uppercase tracking-wide">
+            <div 
+              key={position.id} 
+              className="bg-white border border-gray-200 rounded-xl shadow-sm p-5 relative overflow-hidden"
+            >
+              {/* Blue accent line on left */}
+              <div className="absolute left-0 top-0 w-1 h-full bg-blue-600 rounded-l-xl" />
+              
+              {/* Role Badge */}
+              <div className="inline-block bg-blue-50 text-blue-800 font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-md">
                 {positionNames[index] || position.name}
               </div>
-              {/* Candidate Name - Large, Bold, Dark */}
-              <div className="text-lg font-bold text-[#1F2937] mt-1">
+              
+              {/* Candidate Name */}
+              <div className="font-semibold text-[22px] text-gray-900 mt-2">
                 {selectedCandidate?.name || 'Not selected'}
               </div>
             </div>
@@ -98,20 +108,29 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
         })}
       </div>
 
-      {/* Warning */}
-      <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-        <p className="text-sm text-yellow-800 font-medium">
+      {/* Warning Box */}
+      <div className="mt-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-lg">
+        <p className="font-medium text-[15px] text-amber-800 leading-relaxed">
           ⚠️ Please carefully review your selections. Once submitted, it cannot be changed.
         </p>
       </div>
 
       {/* Buttons */}
-      <div className="flex gap-3 mt-6">
-        <button onClick={onBack} disabled={submitting} className="btn-secondary">
-          BACK
-        </button>
-        <button onClick={handleSubmit} disabled={submitting} className="btn-primary">
+      <div className="flex flex-col gap-3 mt-6">
+        <button 
+          onClick={handleSubmit} 
+          disabled={submitting} 
+          className="w-full py-3.5 rounded-xl bg-blue-600 text-white font-semibold text-base shadow-sm hover:bg-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           {submitting ? 'SUBMITTING...' : 'SUBMIT VOTE'}
+        </button>
+        
+        <button 
+          onClick={onBack} 
+          disabled={submitting} 
+          className="w-full py-3 rounded-xl bg-gray-100 text-gray-700 font-medium text-sm hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          BACK
         </button>
       </div>
     </div>
