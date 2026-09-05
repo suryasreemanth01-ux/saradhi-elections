@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { pb } from '@/lib/pocketbase';
 
 interface CheckEligibilityProps {
   onSuccess: (data: any) => void;
@@ -13,8 +14,6 @@ export function CheckEligibility({ onSuccess }: CheckEligibilityProps) {
   const [mobileNumber, setMobileNumber] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://saradhi-elections-backend.onrender.com/api';
 
   const handleCheck = async () => {
     if (!mobileNumber || mobileNumber.length < 10) {
@@ -26,23 +25,31 @@ export function CheckEligibility({ onSuccess }: CheckEligibilityProps) {
     setError('');
 
     try {
-      const response = await fetch(`${API_URL}/voter/check-eligibility`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile_number: mobileNumber })
+      // Query PocketBase for voter
+      const result = await pb.collection('voters').getList(1, 1, {
+        filter: `mobile_number="${mobileNumber}"`
       });
 
-      const data = await response.json();
-
-      if (data.eligible) {
-        onSuccess({
-          mobile_number: mobileNumber,
-          voter_name: data.voter_name,
-          election_id: data.election_id
-        });
-      } else {
-        setError(data.message);
+      if (result.items.length === 0) {
+        setError('This mobile number is not eligible to vote.');
+        setLoading(false);
+        return;
       }
+
+      const voter = result.items[0];
+
+      if (voter.has_voted) {
+        setError('A vote has already been submitted for this mobile number. You cannot vote again.');
+        setLoading(false);
+        return;
+      }
+
+      onSuccess({
+        mobile_number: mobileNumber,
+        voter_name: voter.name,
+        voter_id: voter.id
+      });
+
     } catch (err) {
       setError('An error occurred. Please try again.');
     } finally {
