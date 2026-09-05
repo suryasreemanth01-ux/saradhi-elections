@@ -71,19 +71,25 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
 
   return (
     <div>
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-[#1F2937]">Review Your Vote</h2>
+      {/* Title */}
+      <div className="text-center mb-2">
+        <h2 className="text-2xl font-bold text-[#1E3A8A]">Review Your Vote</h2>
         <p className="text-sm text-[#6B7280] mt-1">Please review your selections before submitting</p>
       </div>
 
-      <div className="space-y-3">
+      {/* Selections */}
+      <div className="space-y-3 mt-6">
         {positions.map((position, index) => {
           const selectedCandidateId = selections[position.id];
           const selectedCandidate = position.candidates.find((c: any) => c.id === selectedCandidateId);
           return (
-            <div key={position.id} className="p-4 border border-gray-200 rounded-xl">
-              <div className="text-sm text-[#6B7280]">{positionNames[index] || position.name}</div>
-              <div className="font-semibold text-[#1F2937] text-lg">
+            <div key={position.id} className="p-4 border border-gray-200 rounded-xl bg-gray-50">
+              {/* Position Name - Dark Blue */}
+              <div className="text-sm font-semibold text-[#1E3A8A] uppercase tracking-wide">
+                {positionNames[index] || position.name}
+              </div>
+              {/* Candidate Name - Large, Bold, Dark */}
+              <div className="text-lg font-bold text-[#1F2937] mt-1">
                 {selectedCandidate?.name || 'Not selected'}
               </div>
             </div>
@@ -91,12 +97,14 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
         })}
       </div>
 
+      {/* Warning */}
       <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-        <p className="text-sm text-yellow-800">
-          Please carefully review your selections. Once submitted, it cannot be changed.
+        <p className="text-sm text-yellow-800 font-medium">
+          ⚠️ Please carefully review your selections. Once submitted, it cannot be changed.
         </p>
       </div>
 
+      {/* Buttons */}
       <div className="flex gap-3 mt-6">
         <button onClick={onBack} disabled={submitting} className="btn-secondary">
           BACK

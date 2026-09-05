@@ -17,21 +17,19 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS settings
+# CORS settings - Allow all origins for Render
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for testing
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
 # Include routers
 app.include_router(voter_router)
 app.include_router(admin_router)
 app.include_router(election_router)
-
 
 @app.get("/create-admin")
 def create_admin():
@@ -55,11 +53,9 @@ def create_admin():
     finally:
         db.close()
 
-
 @app.get("/")
 def root():
     return {"message": "Saradhi Elections API is running"}
-
 
 @app.get("/health")
 def health_check():

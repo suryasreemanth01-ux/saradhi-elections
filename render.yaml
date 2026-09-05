@@ -9,15 +9,13 @@ services:
       - key: DATABASE_URL
         value: sqlite:///./saradhi_elections.db
       - key: SECRET_KEY
-        generateValue: true
+        value: pnMXlfIMcdGUSYgYJJ/ekGyAKyYpeGOIkFBHQaQ62ac=
       - key: ADMIN_EMAIL
         value: admin@example.com
       - key: ADMIN_PASSWORD
         value: admin123
       - key: ENVIRONMENT
         value: production
-      - key: PYTHON_VERSION
-        value: 3.11.9
 
   - type: web
     name: saradhi-elections-frontend
