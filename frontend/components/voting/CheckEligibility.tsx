@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface CheckEligibilityProps {
   onSuccess: (data: any) => void;
@@ -51,49 +50,48 @@ export function CheckEligibility({ onSuccess }: CheckEligibilityProps) {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl text-center">Welcome!</CardTitle>
-        <CardDescription className="text-center">
+    <div className="w-full max-w-md mx-auto">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-white drop-shadow-lg">Welcome!</h2>
+        <p className="text-white/70 mt-2 text-sm">
           Enter your registered mobile number to check eligibility
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div>
-            <label className="text-sm font-medium block mb-2">
-              Mobile Number
-            </label>
-            <div className="flex gap-2">
-              <span className="flex items-center px-3 bg-gray-100 border border-r-0 rounded-l-md text-gray-600">
-                +91
-              </span>
-              <Input
-                type="tel"
-                maxLength={10}
-                value={mobileNumber}
-                onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
-                className="rounded-l-none"
-                placeholder="9876543210"
-              />
-            </div>
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <label className="text-sm font-medium text-white/80 block mb-2">
+            Mobile Number
+          </label>
+          <div className="flex gap-2">
+            <span className="flex items-center px-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-l-xl text-white/70">
+              +91
+            </span>
+            <Input
+              type="tel"
+              maxLength={10}
+              value={mobileNumber}
+              onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
+              className="rounded-r-xl bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-white/40 focus:ring-2 focus:ring-white/30"
+              placeholder="9876543210"
+            />
           </div>
-
-          {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-700 text-sm">
-              {error}
-            </div>
-          )}
-
-          <Button
-            onClick={handleCheck}
-            disabled={loading}
-            className="w-full text-lg py-6"
-          >
-            {loading ? 'Checking...' : 'CHECK ELIGIBILITY'}
-          </Button>
         </div>
-      </CardContent>
-    </Card>
+
+        {error && (
+          <div className="p-4 bg-red-500/20 backdrop-blur-sm border border-red-400/30 rounded-xl text-red-100 text-sm">
+            {error}
+          </div>
+        )}
+
+        <Button
+          onClick={handleCheck}
+          disabled={loading}
+          className="w-full text-lg py-6 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold shadow-lg shadow-indigo-500/30 transition-all duration-300 hover:scale-[1.02]"
+        >
+          {loading ? 'Checking...' : 'CHECK ELIGIBILITY'}
+        </Button>
+      </div>
+    </div>
   );
 }

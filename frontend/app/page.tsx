@@ -31,52 +31,62 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-premium-light relative overflow-hidden">
-      {/* Background Particles */}
-      <div className="particles">
-        {[...Array(20)].map((_, i) => (
+    <main className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30" />
+
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(30)].map((_, i) => (
           <div
             key={i}
-            className="particle"
+            className="absolute rounded-full bg-white/10 animate-float"
             style={{
-              width: `${Math.random() * 10 + 5}px`,
-              height: `${Math.random() * 10 + 5}px`,
+              width: `${Math.random() * 8 + 4}px`,
+              height: `${Math.random() * 8 + 4}px`,
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
-              animationDuration: `${Math.random() * 20 + 10}s`,
-              animationDelay: `${Math.random() * 10}s`,
+              animationDuration: `${Math.random() * 20 + 15}s`,
+              animationDelay: `${Math.random() * 15}s`,
             }}
           />
         ))}
       </div>
 
-      {/* Hero Section */}
+      {/* Main Content */}
       <div className="relative z-10">
-        <div className="bg-premium py-6 shadow-lg">
-          <div className="container mx-auto px-4 max-w-4xl">
+        {/* Header */}
+        <div className="bg-white/10 backdrop-blur-lg border-b border-white/20">
+          <div className="container mx-auto px-4 max-w-4xl py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="bg-white/20 p-2 rounded-xl">
-                  <VoteIcon className="h-8 w-8 text-white" />
+                <div className="bg-white/20 p-2.5 rounded-2xl backdrop-blur-sm">
+                  <VoteIcon className="h-7 w-7 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                  <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight drop-shadow-lg">
                     SARADHI ELECTIONS 2026
                   </h1>
-                  <p className="text-white/80 text-sm">Secure • Transparent • Democratic</p>
+                  <p className="text-white/80 text-sm flex items-center gap-2">
+                    <span>Secure</span>
+                    <span className="w-1 h-1 bg-white/40 rounded-full" />
+                    <span>Transparent</span>
+                    <span className="w-1 h-1 bg-white/40 rounded-full" />
+                    <span>Democratic</span>
+                  </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+              <div className="flex items-center gap-2 bg-white/15 px-4 py-2 rounded-full backdrop-blur-sm border border-white/20">
                 <Shield className="h-4 w-4 text-white/80" />
-                <span className="text-white/80 text-sm">Verified</span>
+                <span className="text-white/80 text-sm font-medium">Verified</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Progress Steps */}
-        <div className="container mx-auto px-4 max-w-4xl mt-6">
-          <div className="flex items-center justify-center gap-2 mb-6">
+        <div className="container mx-auto px-4 max-w-4xl mt-8">
+          <div className="flex items-center justify-center gap-1 md:gap-3">
             {['Eligibility', 'Vote', 'Review', 'Confirm'].map((label, index) => {
               const stepIndex = ['eligibility', 'voting', 'review', 'confirmation'].indexOf(step);
               const isActive = index === stepIndex;
@@ -84,23 +94,26 @@ export default function Home() {
               return (
                 <div key={index} className="flex items-center">
                   <div className={`
-                    flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all
-                    ${isActive ? 'bg-premium text-white shadow-lg' :
-                      isCompleted ? 'bg-green-500 text-white' :
-                      'bg-gray-200 text-gray-500'}
+                    flex items-center gap-1.5 md:gap-2 px-3 md:px-5 py-1.5 md:py-2.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 backdrop-blur-sm
+                    ${isActive ? 'bg-white text-indigo-600 shadow-lg shadow-indigo-500/30 scale-105' :
+                      isCompleted ? 'bg-green-500/30 text-white border border-green-400/30' :
+                      'bg-white/10 text-white/60 border border-white/10'}
                   `}>
                     <span className={`
-                      w-6 h-6 rounded-full flex items-center justify-center text-xs
-                      ${isActive ? 'bg-white/20' :
-                        isCompleted ? 'bg-white/20' :
-                        'bg-gray-300'}
+                      w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs font-bold
+                      ${isActive ? 'bg-indigo-600 text-white' :
+                        isCompleted ? 'bg-green-500 text-white' :
+                        'bg-white/20 text-white/60'}
                     `}>
                       {isCompleted ? '✓' : index + 1}
                     </span>
-                    {label}
+                    <span className="hidden sm:inline">{label}</span>
                   </div>
                   {index < 3 && (
-                    <div className={`w-8 h-0.5 ${index < stepIndex ? 'bg-green-500' : 'bg-gray-300'}`} />
+                    <div className={`
+                      w-6 md:w-12 h-0.5 mx-0.5 md:mx-1 transition-all duration-500
+                      ${index < stepIndex ? 'bg-green-400' : 'bg-white/20'}
+                    `} />
                   )}
                 </div>
               );
@@ -109,42 +122,54 @@ export default function Home() {
         </div>
 
         {/* Content */}
-        <div className="container mx-auto px-4 max-w-4xl pb-12">
-          {step === 'eligibility' && (
-            <CheckEligibility onSuccess={handleEligibilitySuccess} />
-          )}
+        <div className="container mx-auto px-4 max-w-4xl pb-12 mt-8">
+          <div className="backdrop-blur-xl bg-white/10 rounded-3xl border border-white/20 p-6 md:p-8 shadow-2xl shadow-indigo-500/20">
+            {step === 'eligibility' && (
+              <CheckEligibility onSuccess={handleEligibilitySuccess} />
+            )}
 
-          {step === 'voting' && electionId && (
-            <VotingScreen
-              electionId={electionId}
-              onComplete={handleVotingComplete}
-            />
-          )}
+            {step === 'voting' && electionId && (
+              <VotingScreen
+                electionId={electionId}
+                onComplete={handleVotingComplete}
+              />
+            )}
 
-          {step === 'review' && (
-            <ReviewScreen
-              selections={selectedCandidates}
-              electionId={electionId!}
-              mobileNumber={mobileNumber}
-              onBack={() => setStep('voting')}
-              onSubmit={handleVoteSubmit}
-            />
-          )}
+            {step === 'review' && (
+              <ReviewScreen
+                selections={selectedCandidates}
+                electionId={electionId!}
+                mobileNumber={mobileNumber}
+                onBack={() => setStep('voting')}
+                onSubmit={handleVoteSubmit}
+              />
+            )}
 
-          {step === 'confirmation' && (
-            <VoteConfirmation />
-          )}
+            {step === 'confirmation' && (
+              <VoteConfirmation />
+            )}
+          </div>
         </div>
 
         {/* Footer */}
         <div className="container mx-auto px-4 max-w-4xl">
-          <div className="border-t border-gray-200 pt-4 pb-6 text-center">
-            <p className="text-gray-500 text-sm">
+          <div className="border-t border-white/10 pt-4 pb-6 text-center">
+            <p className="text-white/50 text-sm">
               © 2026 Saradhi Elections. All rights reserved.
             </p>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-80px) rotate(180deg); }
+        }
+        .animate-float {
+          animation: float infinite ease-in-out;
+        }
+      `}</style>
     </main>
   );
 }
