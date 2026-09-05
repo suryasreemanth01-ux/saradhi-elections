@@ -1,4 +1,4 @@
-"use client";
+\"use client";
 
 import { useState, useEffect } from 'react';
 
@@ -64,24 +64,28 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
   };
 
   if (loading) {
-    return <div className="text-center py-8 text-gray-500">Loading review...</div>;
+    return <div className="text-center py-8 text-[#6B7280]">Loading review...</div>;
   }
+
+  const positionNames = ['President', 'Vice President', 'Secretary', 'Treasurer'];
 
   return (
     <div>
       <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-[#212121]">Review Your Vote</h2>
-        <p className="text-gray-500 text-sm">Please confirm your selections</p>
+        <h2 className="text-2xl font-bold text-[#1F2937]">Review Your Vote</h2>
+        <p className="text-sm text-[#6B7280] mt-1">Please review your selections before submitting</p>
       </div>
 
-      <div className="space-y-4">
-        {positions.map((position) => {
+      <div className="space-y-3">
+        {positions.map((position, index) => {
           const selectedCandidateId = selections[position.id];
           const selectedCandidate = position.candidates.find((c: any) => c.id === selectedCandidateId);
           return (
-            <div key={position.id} className="flex justify-between items-center border-b border-gray-100 pb-3">
-              <span className="text-gray-600">{position.name}:</span>
-              <span className="font-semibold text-[#212121]">{selectedCandidate?.name || 'Not selected'}</span>
+            <div key={position.id} className="p-4 border border-gray-200 rounded-xl">
+              <div className="text-sm text-[#6B7280]">{positionNames[index] || position.name}</div>
+              <div className="font-semibold text-[#1F2937] text-lg">
+                {selectedCandidate?.name || 'Not selected'}
+              </div>
             </div>
           );
         })}
@@ -94,19 +98,11 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
       </div>
 
       <div className="flex gap-3 mt-6">
-        <button
-          onClick={onBack}
-          disabled={submitting}
-          className="flex-1 py-3 rounded-xl border-2 border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
-        >
-          Back
+        <button onClick={onBack} disabled={submitting} className="btn-secondary">
+          ← BACK
         </button>
-        <button
-          onClick={handleSubmit}
-          disabled={submitting}
-          className="flex-1 py-3 rounded-xl btn-primary text-white font-semibold disabled:opacity-50"
-        >
-          {submitting ? 'Submitting...' : 'Submit Vote'}
+        <button onClick={handleSubmit} disabled={submitting} className="btn-primary">
+          {submitting ? 'SUBMITTING...' : 'SUBMIT VOTE'}
         </button>
       </div>
     </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
 
 interface VotingScreenProps {
   electionId: number;
@@ -50,7 +49,7 @@ export function VotingScreen({ electionId, onComplete }: VotingScreenProps) {
   };
 
   if (loading) {
-    return <div className="text-center py-8 text-gray-500">Loading election...</div>;
+    return <div className="text-center py-8 text-[#6B7280]">Loading election...</div>;
   }
 
   if (error) {
@@ -60,50 +59,46 @@ export function VotingScreen({ electionId, onComplete }: VotingScreenProps) {
   const currentPosition = positions[currentIndex];
   const totalPositions = positions.length;
 
+  const positionTitles = ['President', 'Vice President', 'Secretary', 'Treasurer'];
+
   return (
     <div>
       <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-[#212121]">Select {currentPosition.name}</h2>
-        <p className="text-gray-500 text-sm">
-          {currentIndex + 1} of {totalPositions}
+        <h2 className="text-2xl font-bold text-[#1F2937]">
+          Select {positionTitles[currentIndex] || currentPosition.name}
+        </h2>
+        <p className="text-sm text-[#6B7280] mt-1">
+          Step {currentIndex + 1} of {totalPositions} • Choose ONE candidate
         </p>
       </div>
 
       <div className="space-y-3">
-        {currentPosition.candidates.map((candidate: any) => (
-          <div
-            key={candidate.id}
-            onClick={() => handleSelect(candidate.id)}
-            className={`
-              p-4 rounded-xl border-2 cursor-pointer transition-all
-              ${selections[currentPosition.id] === candidate.id
-                ? 'border-[#0D47A1] bg-blue-50'
-                : 'border-gray-200 hover:border-blue-300'}
-            `}
-          >
-            <div className="flex items-center gap-3">
-              <div className={`
-                w-5 h-5 rounded-full border-2 flex items-center justify-center
-                ${selections[currentPosition.id] === candidate.id
-                  ? 'border-[#0D47A1] bg-[#0D47A1]'
-                  : 'border-gray-300'}
-              `}>
-                {selections[currentPosition.id] === candidate.id && (
-                  <div className="w-2 h-2 rounded-full bg-white" />
-                )}
+        {currentPosition.candidates.map((candidate: any) => {
+          const isSelected = selections[currentPosition.id] === candidate.id;
+          return (
+            <div
+              key={candidate.id}
+              onClick={() => handleSelect(candidate.id)}
+              className={`candidate-card ${isSelected ? 'selected' : ''}`}
+            >
+              <div className="radio-circle">
+                {isSelected && <div className="radio-dot" />}
               </div>
-              <span className="text-[#212121] font-medium">{candidate.name}</span>
+              <div>
+                <div className="font-semibold text-[#1F2937]">{candidate.name}</div>
+                <div className="text-sm text-[#6B7280]">Candidate for {currentPosition.name}</div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <button
         onClick={handleNext}
         disabled={!selections[currentPosition.id]}
-        className="w-full mt-6 py-3 rounded-xl btn-primary text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        className="btn-primary mt-6"
       >
-        {currentIndex < totalPositions - 1 ? 'Next →' : 'Review Vote'}
+        {currentIndex < totalPositions - 1 ? 'NEXT →' : 'REVIEW VOTE'}
       </button>
     </div>
   );
