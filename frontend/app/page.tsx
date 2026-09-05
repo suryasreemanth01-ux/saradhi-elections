@@ -13,7 +13,7 @@ export default function Home() {
   const [electionId, setElectionId] = useState<number | null>(null);
   const [selectedCandidates, setSelectedCandidates] = useState<Record<number, number>>({});
 
-  const steps = ['Eligibility', 'President', 'Vice President', 'Secretary', 'Treasurer', 'Review'];
+  const steps = ['Eligibility', 'Vote', 'Review'];
   const currentIndex = ['eligibility', 'voting', 'review', 'confirmation'].indexOf(step);
 
   const handleEligibilitySuccess = (data: any) => {
