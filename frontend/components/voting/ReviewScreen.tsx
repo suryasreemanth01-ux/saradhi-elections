@@ -64,7 +64,7 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
   };
 
   if (loading) {
-    return <div className="text-center py-8 text-[#6B7280]">Loading review...</div>;
+    return <div style={{textAlign: 'center', padding: '32px', color: '#6B7280'}}>Loading review...</div>;
   }
 
   const positionNames = ['President', 'Vice President', 'Secretary', 'Treasurer'];
@@ -72,35 +72,77 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
   return (
     <div>
       {/* Page Heading */}
-      <div className="text-center mb-2">
-        <h1 className="text-3xl font-bold text-[#1E3A8A] uppercase tracking-wide">
+      <div style={{textAlign: 'center', marginBottom: '8px'}}>
+        <h1 style={{
+          fontSize: '28px',
+          fontWeight: '800',
+          color: '#1E3A8A',
+          textTransform: 'uppercase',
+          letterSpacing: '1px',
+          marginBottom: '4px'
+        }}>
           Review Your Vote
         </h1>
-        <p className="text-base text-[#6B7280] mt-1">
+        <p style={{
+          fontSize: '16px',
+          color: '#6B7280',
+          marginTop: '4px'
+        }}>
           Please review your selections before submitting.
         </p>
       </div>
 
       {/* Candidate Cards */}
-      <div className="space-y-4 mt-6">
+      <div style={{marginTop: '24px'}}>
         {positions.map((position, index) => {
           const selectedCandidateId = selections[position.id];
           const selectedCandidate = position.candidates.find((c: any) => c.id === selectedCandidateId);
           return (
             <div 
               key={position.id} 
-              className="bg-white border border-gray-200 rounded-xl shadow-sm p-5 relative overflow-hidden"
+              style={{
+                background: 'white',
+                border: '1px solid #E5E7EB',
+                borderRadius: '12px',
+                padding: '20px',
+                marginBottom: '16px',
+                position: 'relative',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+              }}
             >
-              {/* Blue accent line on left */}
-              <div className="absolute left-0 top-0 w-1 h-full bg-blue-600 rounded-l-xl" />
+              {/* Blue accent line */}
+              <div style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                width: '4px',
+                height: '100%',
+                background: '#2563EB',
+                borderRadius: '4px 0 0 4px'
+              }} />
               
               {/* Role Badge */}
-              <div className="inline-block bg-blue-50 text-blue-800 font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-md">
+              <div style={{
+                display: 'inline-block',
+                background: '#EFF6FF',
+                color: '#1E3A8A',
+                fontWeight: '700',
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                padding: '4px 12px',
+                borderRadius: '6px'
+              }}>
                 {positionNames[index] || position.name}
               </div>
               
               {/* Candidate Name */}
-              <div className="font-semibold text-[22px] text-gray-900 mt-2">
+              <div style={{
+                fontSize: '22px',
+                fontWeight: '600',
+                color: '#111827',
+                marginTop: '8px'
+              }}>
                 {selectedCandidate?.name || 'Not selected'}
               </div>
             </div>
@@ -109,18 +151,41 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
       </div>
 
       {/* Warning Box */}
-      <div className="mt-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-lg">
-        <p className="font-medium text-[15px] text-amber-800 leading-relaxed">
+      <div style={{
+        marginTop: '24px',
+        padding: '16px',
+        background: '#FFFBEB',
+        borderLeft: '4px solid #F59E0B',
+        borderRadius: '8px'
+      }}>
+        <p style={{
+          fontWeight: '500',
+          fontSize: '15px',
+          color: '#92400E',
+          lineHeight: '1.5'
+        }}>
           ⚠️ Please carefully review your selections. Once submitted, it cannot be changed.
         </p>
       </div>
 
       {/* Buttons */}
-      <div className="flex flex-col gap-3 mt-6">
+      <div style={{marginTop: '24px'}}>
         <button 
           onClick={handleSubmit} 
           disabled={submitting} 
-          className="w-full py-3.5 rounded-xl bg-blue-600 text-white font-semibold text-base shadow-sm hover:bg-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{
+            width: '100%',
+            padding: '14px',
+            borderRadius: '12px',
+            background: '#2563EB',
+            color: 'white',
+            fontWeight: '600',
+            fontSize: '16px',
+            border: 'none',
+            cursor: submitting ? 'not-allowed' : 'pointer',
+            opacity: submitting ? 0.5 : 1,
+            marginBottom: '12px'
+          }}
         >
           {submitting ? 'SUBMITTING...' : 'SUBMIT VOTE'}
         </button>
@@ -128,7 +193,18 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
         <button 
           onClick={onBack} 
           disabled={submitting} 
-          className="w-full py-3 rounded-xl bg-gray-100 text-gray-700 font-medium text-sm hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{
+            width: '100%',
+            padding: '12px',
+            borderRadius: '12px',
+            background: '#F3F4F6',
+            color: '#374151',
+            fontWeight: '500',
+            fontSize: '14px',
+            border: 'none',
+            cursor: submitting ? 'not-allowed' : 'pointer',
+            opacity: submitting ? 0.5 : 1
+          }}
         >
           BACK
         </button>
