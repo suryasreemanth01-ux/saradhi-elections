@@ -50,21 +50,21 @@ export function CheckEligibility({ onSuccess }: CheckEligibilityProps) {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-white drop-shadow-lg">Welcome!</h2>
-        <p className="text-white/70 mt-2 text-sm">
+    <div className="w-full">
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-bold text-white drop-shadow-lg">Welcome!</h2>
+        <p className="text-white/70 text-sm mt-1">
           Enter your registered mobile number to check eligibility
         </p>
       </div>
 
       <div className="space-y-4">
         <div>
-          <label className="text-sm font-medium text-white/80 block mb-2">
+          <label className="text-sm font-medium text-white/80 block mb-1.5">
             Mobile Number
           </label>
           <div className="flex gap-2">
-            <span className="flex items-center px-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-l-xl text-white/70">
+            <span className="flex items-center px-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-l-xl text-white/70 text-sm">
               +91
             </span>
             <Input
@@ -79,7 +79,7 @@ export function CheckEligibility({ onSuccess }: CheckEligibilityProps) {
         </div>
 
         {error && (
-          <div className="p-4 bg-red-500/20 backdrop-blur-sm border border-red-400/30 rounded-xl text-red-100 text-sm">
+          <div className="p-3 bg-red-500/20 backdrop-blur-sm border border-red-400/30 rounded-xl text-red-100 text-sm">
             {error}
           </div>
         )}
@@ -87,7 +87,7 @@ export function CheckEligibility({ onSuccess }: CheckEligibilityProps) {
         <Button
           onClick={handleCheck}
           disabled={loading}
-          className="w-full text-lg py-6 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold shadow-lg shadow-indigo-500/30 transition-all duration-300 hover:scale-[1.02]"
+          className="w-full text-lg py-5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold shadow-lg shadow-indigo-500/30 transition-all duration-300 hover:scale-[1.02]"
         >
           {loading ? 'Checking...' : 'CHECK ELIGIBILITY'}
         </Button>
