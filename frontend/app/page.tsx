@@ -13,6 +13,15 @@ export default function Home() {
   const [electionId, setElectionId] = useState<number | null>(null);
   const [selectedCandidates, setSelectedCandidates] = useState<Record<number, number>>({});
 
+  const steps = [
+    { id: 'eligibility', label: 'Eligibility' },
+    { id: 'voting', label: 'Vote' },
+    { id: 'review', label: 'Review' },
+    { id: 'confirmation', label: 'Confirm' }
+  ];
+
+  const currentIndex = steps.findIndex(s => s.id === step);
+
   const handleEligibilitySuccess = (data: any) => {
     setMobileNumber(data.mobile_number);
     setVoterName(data.voter_name);
@@ -29,41 +38,35 @@ export default function Home() {
     setStep('confirmation');
   };
 
-  const steps = ['Eligibility', 'Vote', 'Review', 'Confirm'];
-  const currentStepIndex = ['eligibility', 'voting', 'review', 'confirmation'].indexOf(step);
-
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-lg glass-card rounded-2xl p-6 md:p-8">
+      <div className="w-full max-w-2xl glass-card p-6 md:p-8">
         
         {/* Header */}
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-white">SARADHI ELECTIONS 2026</h1>
-          <p className="text-white/60 text-sm mt-1">Secure • Transparent • Democratic</p>
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <span className="text-3xl">🗳️</span>
+            <h1 className="text-2xl font-bold text-[#0D47A1]">SARADHI ELECTION SYSTEM</h1>
+          </div>
+          <p className="text-gray-500 text-sm">Secure Digital Voting Platform</p>
         </div>
 
-        {/* Steps */}
-        <div className="flex items-center justify-between mb-6">
-          {steps.map((label, index) => (
-            <div key={index} className="flex items-center">
+        {/* Progress Steps */}
+        <div className="flex items-center justify-between mb-8">
+          {steps.map((s, index) => (
+            <div key={s.id} className="flex items-center flex-1">
               <div className={`
-                w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold
-                ${index < currentStepIndex ? 'bg-green-500 text-white' :
-                  index === currentStepIndex ? 'bg-white text-purple-600' :
-                  'bg-white/20 text-white/40'}
+                step-circle
+                ${index < currentIndex ? 'step-completed' :
+                  index === currentIndex ? 'step-active' :
+                  'step-inactive'}
               `}>
-                {index < currentStepIndex ? '✓' : index + 1}
+                {index < currentIndex ? '✓' : index + 1}
               </div>
-              <span className={`
-                text-xs ml-1 hidden sm:block
-                ${index <= currentStepIndex ? 'text-white' : 'text-white/40'}
-              `}>
-                {label}
-              </span>
-              {index < 3 && (
+              {index < steps.length - 1 && (
                 <div className={`
-                  w-6 h-0.5 mx-1
-                  ${index < currentStepIndex ? 'bg-green-500' : 'bg-white/20'}
+                  step-line
+                  ${index < currentIndex ? 'step-line-completed' : ''}
                 `} />
               )}
             </div>
@@ -75,12 +78,14 @@ export default function Home() {
           {step === 'eligibility' && (
             <CheckEligibility onSuccess={handleEligibilitySuccess} />
           )}
+
           {step === 'voting' && electionId && (
             <VotingScreen
               electionId={electionId}
               onComplete={handleVotingComplete}
             />
           )}
+
           {step === 'review' && (
             <ReviewScreen
               selections={selectedCandidates}
@@ -90,14 +95,17 @@ export default function Home() {
               onSubmit={handleVoteSubmit}
             />
           )}
+
           {step === 'confirmation' && (
             <VoteConfirmation />
           )}
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-6 pt-4 border-t border-white/10">
-          <p className="text-white/30 text-xs">© 2026 Saradhi Elections. All rights reserved.</p>
+        <div className="text-center mt-6 pt-4 border-t border-gray-200">
+          <p className="text-gray-400 text-xs">
+            © 2026 Saradhi Election System • Secure • Transparent • Reliable
+          </p>
         </div>
       </div>
     </div>

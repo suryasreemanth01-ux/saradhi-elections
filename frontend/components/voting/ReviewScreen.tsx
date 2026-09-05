@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface ReviewScreenProps {
   selections: Record<number, number>;
@@ -17,7 +15,7 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://saradhi-elections-backend.onrender.com/api';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
   useEffect(() => {
     fetchPositions();
@@ -66,49 +64,51 @@ export function ReviewScreen({ selections, electionId, mobileNumber, onBack, onS
   };
 
   if (loading) {
-    return (
-      <Card className="w-full max-w-md mx-auto">
-        <CardContent className="py-8 text-center">
-          <div className="text-gray-600">Loading review...</div>
-        </CardContent>
-      </Card>
-    );
+    return <div className="text-center py-8 text-gray-500">Loading review...</div>;
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl text-center">REVIEW YOUR VOTE</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {positions.map((position) => {
-            const selectedCandidateId = selections[position.id];
-            const selectedCandidate = position.candidates.find((c: any) => c.id === selectedCandidateId);
-            return (
-              <div key={position.id} className="border-b pb-3">
-                <div className="text-sm font-medium text-gray-500">{position.name}</div>
-                <div className="text-lg font-semibold text-gray-900">{selectedCandidate?.name || 'Not selected'}</div>
-              </div>
-            );
-          })}
-        </div>
+    <div>
+      <div className="text-center mb-6">
+        <h2 className="text-xl font-semibold text-[#212121]">Review Your Vote</h2>
+        <p className="text-gray-500 text-sm">Please confirm your selections</p>
+      </div>
 
-        <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-          <p className="text-sm text-yellow-800">
-            ⚠️ Please carefully review your selections. Once your vote is submitted, it cannot be changed.
-          </p>
-        </div>
+      <div className="space-y-4">
+        {positions.map((position) => {
+          const selectedCandidateId = selections[position.id];
+          const selectedCandidate = position.candidates.find((c: any) => c.id === selectedCandidateId);
+          return (
+            <div key={position.id} className="flex justify-between items-center border-b border-gray-100 pb-3">
+              <span className="text-gray-600">{position.name}:</span>
+              <span className="font-semibold text-[#212121]">{selectedCandidate?.name || 'Not selected'}</span>
+            </div>
+          );
+        })}
+      </div>
 
-        <div className="flex gap-3 mt-6">
-          <Button onClick={onBack} variant="outline" className="flex-1" disabled={submitting}>
-            BACK
-          </Button>
-          <Button onClick={handleSubmit} className="flex-1" disabled={submitting}>
-            {submitting ? 'SUBMITTING...' : 'SUBMIT FINAL VOTE'}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+      <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+        <p className="text-sm text-yellow-800">
+          ⚠️ Please carefully review your selections. Once submitted, it cannot be changed.
+        </p>
+      </div>
+
+      <div className="flex gap-3 mt-6">
+        <button
+          onClick={onBack}
+          disabled={submitting}
+          className="flex-1 py-3 rounded-xl border-2 border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
+        >
+          Back
+        </button>
+        <button
+          onClick={handleSubmit}
+          disabled={submitting}
+          className="flex-1 py-3 rounded-xl btn-primary text-white font-semibold disabled:opacity-50"
+        >
+          {submitting ? 'Submitting...' : 'Submit Vote'}
+        </button>
+      </div>
+    </div>
   );
 }

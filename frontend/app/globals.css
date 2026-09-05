@@ -3,41 +3,109 @@
 @tailwind utilities;
 
 body {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0D47A1 0%, #42A5F5 100%);
   min-height: 100vh;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
+/* Glass Card */
 .glass-card {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
 }
 
+/* Primary Button */
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  transition: all 0.2s ease;
+  background: linear-gradient(135deg, #0D47A1 0%, #42A5F5 100%);
+  transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  transform: scale(1.02);
-  box-shadow: 0 10px 25px -5px rgba(102, 126, 234, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(13, 71, 161, 0.5);
 }
 
+/* Input Fields */
 .input-glass {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-}
-
-.input-glass::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #e0e0e0;
+  color: #212121;
+  border-radius: 10px;
+  padding: 12px 16px;
+  width: 100%;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
 }
 
 .input-glass:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  border-color: #0D47A1;
+  box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1);
+}
+
+.input-glass::placeholder {
+  color: #999;
+}
+
+/* Success Checkmark */
+.checkmark-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Progress Steps */
+.step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.step-active {
+  background: linear-gradient(135deg, #0D47A1 0%, #42A5F5 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+}
+
+.step-completed {
+  background: #4CAF50;
+  color: white;
+}
+
+.step-inactive {
+  background: #e0e0e0;
+  color: #999;
+}
+
+.step-line {
+  flex: 1;
+  height: 2px;
+  background: #e0e0e0;
+  margin: 0 8px;
+}
+
+.step-line-completed {
+  background: #4CAF50;
 }

@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
 
 interface VotingScreenProps {
   electionId: number;
@@ -18,7 +15,7 @@ export function VotingScreen({ electionId, onComplete }: VotingScreenProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://saradhi-elections-backend.onrender.com/api';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
   useEffect(() => {
     fetchPositions();
@@ -53,72 +50,61 @@ export function VotingScreen({ electionId, onComplete }: VotingScreenProps) {
   };
 
   if (loading) {
-    return (
-      <Card className="w-full max-w-md mx-auto">
-        <CardContent className="py-8 text-center">
-          <div className="text-gray-600">Loading election...</div>
-        </CardContent>
-      </Card>
-    );
+    return <div className="text-center py-8 text-gray-500">Loading election...</div>;
   }
 
   if (error) {
-    return (
-      <Card className="w-full max-w-md mx-auto">
-        <CardContent className="py-8 text-center">
-          <div className="text-red-600">{error}</div>
-        </CardContent>
-      </Card>
-    );
+    return <div className="text-center py-8 text-red-600">{error}</div>;
   }
 
   const currentPosition = positions[currentIndex];
   const totalPositions = positions.length;
-  const progress = ((currentIndex) / totalPositions) * 100;
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm text-gray-500">
-            {currentIndex + 1} of {totalPositions}
-          </span>
-          <span className="text-sm font-medium text-blue-600">
-            {Math.round(progress)}%
-          </span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div
-            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <CardTitle className="text-2xl mt-4">{currentPosition.name}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <RadioGroup
-          value={selections[currentPosition.id]?.toString()}
-          onValueChange={(value) => handleSelect(parseInt(value))}
-          className="space-y-3"
-        >
-          {currentPosition.candidates.map((candidate: any) => (
-            <div key={candidate.id} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50">
-              <RadioGroupItem value={candidate.id.toString()} id={`candidate-${candidate.id}`} />
-              <Label htmlFor={`candidate-${candidate.id}`} className="flex-1 cursor-pointer text-lg">
-                {candidate.name}
-              </Label>
-            </div>
-          ))}
-        </RadioGroup>
+    <div>
+      <div className="text-center mb-6">
+        <h2 className="text-xl font-semibold text-[#212121]">Select {currentPosition.name}</h2>
+        <p className="text-gray-500 text-sm">
+          {currentIndex + 1} of {totalPositions}
+        </p>
+      </div>
 
-        <Button
-          onClick={handleNext}
-          disabled={!selections[currentPosition.id]}
-          className="w-full mt-6 text-lg py-6"
-        >
-          {currentIndex < totalPositions - 1 ? 'NEXT' : 'REVIEW VOTE'}
-        </Button>
-      </CardContent>
-    </Card>
+      <div className="space-y-3">
+        {currentPosition.candidates.map((candidate: any) => (
+          <div
+            key={candidate.id}
+            onClick={() => handleSelect(candidate.id)}
+            className={`
+              p-4 rounded-xl border-2 cursor-pointer transition-all
+              ${selections[currentPosition.id] === candidate.id
+                ? 'border-[#0D47A1] bg-blue-50'
+                : 'border-gray-200 hover:border-blue-300'}
+            `}
+          >
+            <div className="flex items-center gap-3">
+              <div className={`
+                w-5 h-5 rounded-full border-2 flex items-center justify-center
+                ${selections[currentPosition.id] === candidate.id
+                  ? 'border-[#0D47A1] bg-[#0D47A1]'
+                  : 'border-gray-300'}
+              `}>
+                {selections[currentPosition.id] === candidate.id && (
+                  <div className="w-2 h-2 rounded-full bg-white" />
+                )}
+              </div>
+              <span className="text-[#212121] font-medium">{candidate.name}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={handleNext}
+        disabled={!selections[currentPosition.id]}
+        className="w-full mt-6 py-3 rounded-xl btn-primary text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {currentIndex < totalPositions - 1 ? 'Next →' : 'Review Vote'}
+      </button>
+    </div>
   );
 }
